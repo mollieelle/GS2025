@@ -1,0 +1,6 @@
+{
+  "timestamp": "2025-01-18T22:55:52.873+00:00",
+  "status": 405,
+  "error": "Method Not Allowed",
+  "path": "/api/mutualfunds/future-value"
+}
