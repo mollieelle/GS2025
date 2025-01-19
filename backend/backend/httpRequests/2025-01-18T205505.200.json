@@ -1,9 +1,0 @@
-{
-  "initialInvestment": 10000.0,
-  "timeHorizon": 10,
-  "returnRate": -7.7247159902908855,
-  "riskFreeRate": 4.61,
-  "mutualFundBeta": -0.635777960223602,
-  "earnings": -5381.3,
-  "totalBalance": 4618.7
-}
