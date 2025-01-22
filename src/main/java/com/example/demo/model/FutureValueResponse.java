@@ -25,6 +25,9 @@ public class FutureValueResponse {
         this.totalBalance = totalBalance;
     }
 
+    public FutureValueResponse(double v, double v1, double v2, int i) {
+    }
+
     public double getInitialInvestment() {
         return initialInvestment;
     }

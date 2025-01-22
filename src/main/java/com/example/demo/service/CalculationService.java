@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
 @Service
 public class CalculationService {
     private static final double RISK_FREE_RATE = 4.61;
@@ -36,9 +35,9 @@ public class CalculationService {
         // Fetch market return rate
         double marketReturnRate = fetchMarketReturnRate();
 
+
         // Calculate rate
-        double rate = (RISK_FREE_RATE / 100) + beta * (marketReturnRate  - RISK_FREE_RATE / 100);
-        System.out.println(marketReturnRate);
+        double rate = (RISK_FREE_RATE / 100) + beta * (marketReturnRate - RISK_FREE_RATE / 100);
 
         // Calculate future value
         double totalBalance = Math.round(initialInvestment * Math.exp(rate * timeInYears) * 100.0) / 100.0;
@@ -59,81 +58,58 @@ public class CalculationService {
         return response;
     }
 
-
-//    public double calculateFutureValue(
-//            String ticker,
-//            double initialInvestment,
-//            int timeInYears) {
-//        // Fetch beta for the mutual fund
-//        double beta = fetchBeta(ticker);
-//
-//        // Fetch market return rate
-//        double marketReturnRate = fetchMarketReturnRate();
-//
-//        // Calculate rate
-//        double rate = (RISK_FREE_RATE / 100) + ((marketReturnRate / 100) - (RISK_FREE_RATE / 100)) * beta;
-//
-//        // Calculate future value
-//        return Math.round(initialInvestment * Math.exp(rate * timeInYears) * 100.0) / 100.0;
-//    }
-
-    private double fetchBeta(String ticker) {
+    double fetchBeta(String ticker) {
         String url = String.format(BETA_API, ticker);
         String response = restTemplate.getForObject(url, String.class);
 
         try {
             JsonNode rootNode = objectMapper.readTree(response);
-            return rootNode.get("data").asDouble();
+            JsonNode betaNode = rootNode.get("data");
+
+            if (betaNode == null || betaNode.isNull()) {
+                throw new RuntimeException("Beta value is missing in the API response");
+            }
+
+            return betaNode.asDouble();
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse beta from API response", e);
         }
     }
 
-    private double fetchMarketReturnRate() {
+    double fetchMarketReturnRate() {
         String response = restTemplate.getForObject(MARKET_RETURN_API, String.class);
-
-
 
         try {
             JsonNode rootNode = objectMapper.readTree(response);
             JsonNode observations = rootNode.get("observations");
 
-            double firstValue = 0, lastValue = 0;
-
-
-
-            for (JsonNode observation : observations) {
-                String date = observation.get("date").asText();
-                double value = observation.get("value").asDouble(Double.NaN);
-
-
-                double values = observation.has("value") && !observation.get("value").isNull()
-                        ? observation.get("value").asDouble(0.0)
-                        : 0.0;
-
-
-                if ("2024-01-02".equals(date)) {
-                    firstValue = values;
-                } else if ("2024-12-31".equals(date)) {
-                    lastValue = values;
-                }
+            if (observations == null || !observations.isArray()) {
+                throw new RuntimeException("Observations node is missing or invalid in the API response.");
             }
 
-//            System.out.println(firstValue);
-//            System.out.println(lastValue);
+            double firstValue = 0;
+            double lastValue = 0;
 
+            for (JsonNode observation : observations) {
+                if (observation.has("date") && observation.has("value") && !observation.get("value").isNull()) {
+                    String date = observation.get("date").asText();
+                    double value = observation.get("value").asDouble(0.0);
+
+                    if ("2024-01-02".equals(date)) {
+                        firstValue = value;
+                    } else if ("2024-12-31".equals(date)) {
+                        lastValue = value;
+                    }
+                }
+            }
 
             if (firstValue == 0 || lastValue == 0) {
                 throw new RuntimeException("Failed to retrieve market return rate values.");
             }
-//            System.out.println((lastValue - firstValue) / firstValue);
-
 
             return (lastValue - firstValue) / firstValue;
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse market return rate from API response", e);
         }
     }
-
-
 }

@@ -5,6 +5,9 @@ public class FutureValueRequest {
     private double initialInvestment;
     private int timeInYears;
 
+    public FutureValueRequest(String fxaix, double v, int i) {
+    }
+
     public String getTicker() {
         return ticker;
     }
