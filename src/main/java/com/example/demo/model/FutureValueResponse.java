@@ -8,8 +8,6 @@ public class FutureValueResponse {
     private double mutualFundBeta;
     private double earnings;
     private double totalBalance;
-//    private String ticker;
-//    private int timeInYears;
 
     public FutureValueResponse() {}
     public FutureValueResponse(double initialInvestment,

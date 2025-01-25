@@ -10,10 +10,10 @@ import java.util.List;
 public class MutualFundService {
     public List<MutualFund> getMutualFunds() {
         return Arrays.asList(
-                new MutualFund("FXAIX", "Fidelity 500 Index Fund", "Tracks the S&P 500"),
-                new MutualFund("VFIAX", "Vanguard 500 Index Fund", "Another S&P 500 tracker"),
-                new MutualFund("SWPPX", "Schwab S&P 500 Index Fund", "Low-cost S&P 500 index fund")
-
+                new MutualFund("DYNF", "iShares US Equity Factor Rotation Active ETF"),
+                new MutualFund("SPHB", "Invesco S&P 500®"),
+                new MutualFund("SPY", "SPDR® S&P 500 ETF Trust"),
+                new MutualFund("IWM", "iShares Russell 2000 ETF")
         );
     }
 }
