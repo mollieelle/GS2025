@@ -28,12 +28,8 @@ public class CalculationService {
             String ticker,
             double initialInvestment,
             int timeInYears) {
-        // Fetch beta for the mutual fund
-        double beta = fetchBeta(ticker);
-
-
-        // Fetch market return rate
-        double marketReturnRate = fetchMarketReturnRate();
+            double beta = fetchBeta(ticker);
+            double marketReturnRate = fetchMarketReturnRate();
 
 
         // Calculate rate
