@@ -29,3 +29,16 @@ This project is a Spring Boot application that provides APIs for mutual fund inf
       "name": "Invesco S&P 500®"
     }
   ]
+
+2. Calculate Future Value
+Endpoint: POST /api/mutualfunds/future-value
+Description: Calculates the future value of an investment based on input parameters.
+Request Body:
+```json
+{
+  "ticker": "SPY",
+  "initialInvestment": 10000,
+  "timeInYears": 5
+}
+
+
