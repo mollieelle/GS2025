@@ -1,100 +1,72 @@
-# Mutual Fund API
+# Mutual Fund Calculator
 
-This project is a Spring Boot application that provides APIs for mutual fund information and future value calculations. It integrates with external APIs to fetch market data and calculate financial metrics.
+The **Mutual Fund Calculator** is a web-based application that helps users estimate the future value of investments in various mutual funds based on initial investment, time horizon, and market dynamics. It includes both a backend and a frontend for seamless interaction.
 
 ---
 
 ## Features
-- Retrieve a list of mutual funds.
-- Calculate the future value of an investment based on beta, market returns, and the risk-free rate.
-- Fetch beta values for stocks from an external API.
-- Compute market return rates using data from an external API.
+- Fetch mutual fund data.
+- Calculate the future value of investments.
+- Display detailed results, including return rates, risk-free rates, and earnings.
+- User-friendly UI.
 
 ---
 
-## Endpoints
+## Project Structure
+This project has a **frontend** built with Angular and a **backend** developed in Java (Spring Boot).
 
-### 1. Get All Mutual Funds
-- **Endpoint:** `GET /api/mutualfunds`
-- **Description:** Retrieves a list of available mutual funds.
-- **Response:**
-  ```json
-  [
-    {
-      "ticker": "DYNF",
-      "name": "iShares US Equity Factor Rotation Active ETF"
-    },
-    {
-      "ticker": "SPHB",
-      "name": "Invesco S&P 500®"
-    }
-  ]
-  ```
+### Backend
+The backend provides APIs to:
+- Fetch available mutual fund data.
+- Perform future value calculations.
 
-### 2. Calculate Future Value
-- **Endpoint:** `POST /api/mutualfunds/future-value`
-- **Description:** Calculates the future value of an investment based on input parameters.
-- **Request Body:**
-  ```json
-  {
-    "ticker": "SPY",
-    "initialInvestment": 10000,
-    "timeInYears": 5
-  }
-  ```
-- **Response:**
-  ```json
-  {
-    "initialInvestment": 10000.0,
-    "timeHorizon": 5,
-    "returnRate": 7.5,
-    "riskFreeRate": 4.61,
-    "mutualFundBeta": 1.2,
-    "earnings": 4385.5,
-    "totalBalance": 14385.5
-  }
-  ```
+### Frontend
+The frontend is an Angular application that:
+- Displays a list of mutual funds.
+- Accepts user inputs for calculations.
+- Shows interactive and detailed results.
 
 ---
 
-## Technologies Used
+## Installation and Setup
+
+### Backend
+
+#### Technologies Used
 - **Java**: Programming language
 - **Spring Boot**: Framework for creating the API
-- **RestTemplate**: To consume external APIs
+- **RestTemplate**: For consuming external APIs
 - **Jackson ObjectMapper**: For JSON parsing
 - **Maven**: Dependency management
-- **External APIs**:
-  - Beta API: Fetch beta values for stocks.
-  - Market Return API: Retrieve historical market return data.
 
----
+#### External APIs
+- **Beta API**: Fetch beta values for stocks.
+- **Market Return API**: Retrieve historical market return data.
 
-## Setup Instructions
-
-### Prerequisites
+#### Prerequisites
 - Java 17+
 - Maven 3.6+
 - An IDE like IntelliJ IDEA or Eclipse
 - External API keys for:
-  - **Beta API**: Ensure you have a valid endpoint for beta data.
-  - **Market Return API**: Requires an API key (e.g., from St. Louis Fed's FRED).
+  - Beta API: Ensure you have a valid endpoint for beta data.
 
-### Steps to Run the Application
-1. Clone this repository:
+#### Setup Instructions
+
+1. **Clone the Repository**
    ```bash
    git clone https://github.com/your-username/mutual-fund-api.git
    cd mutual-fund-api
    ```
 
-2. Update API configurations:
+2. **Update API Configurations**
    - Replace placeholders in the `CalculationService` class with your actual API endpoints and keys.
 
-3. Build the project:
+3. **Build the Project**
    ```bash
    mvn clean install
    ```
 
-4. Run the application:
+4. **Run the Application**
    ```bash
    mvn spring-boot:run
    ```
@@ -103,33 +75,87 @@ This project is a Spring Boot application that provides APIs for mutual fund inf
 
 ---
 
-## Testing the APIs
-You can test the APIs using:
-- **Postman**
-- **cURL**: Example:
-  ```bash
-  curl -X GET http://localhost:8080/api/mutualfunds
-  ```
+### Frontend
+
+#### Prerequisites
+- Node.js 18+
+- Angular CLI 15+
+
+#### Setup Instructions
+1. **Navigate to the Frontend Directory**
+   ```bash
+   cd frontend
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run the Frontend**
+   ```bash
+   ng serve
+   ```
+
+4. Access the application at `http://localhost:4200`.
 
 ---
 
-## Folder Structure
-```
-src/
-├── main/
-│   ├── java/com/example/demo/
-│   │   ├── controller/        # API Controllers
-│   │   ├── model/             # Data Models
-│   │   ├── service/           # Service Layer
-│   ├── resources/
-│       ├── application.properties  # Configuration file
-```
+## Usage
+1. Start the backend server and ensure the database is configured and running.
+2. Start the frontend server.
+3. Open your browser and navigate to `http://localhost:4200`.
+4. Select a mutual fund from the dropdown, input the initial investment and time horizon, and click **Calculate**.
+5. View the results, including future value, return rates, and total balance.
 
 ---
 
-## Future Enhancements
-- Implement user authentication for API access.
-- Support additional investment metrics (e.g., CAGR, IRR).
-- Add a front-end interface for user interaction.
-- Integrate with a database to store historical calculations.
+## API Endpoints
+
+### Backend
+- **Get Mutual Funds**
+  - `GET /api/mutualfunds`
+- **Calculate Future Value**
+  - `POST /api/mutualfunds/future-value`
+
+### Frontend
+The Angular application interacts with the above endpoints to fetch mutual fund data and calculate future values.
+
+---
+
+## Technologies Used
+
+### Backend
+- Java
+- Spring Boot
+- RESTful APIs
+
+### Frontend
+- Angular
+- TypeScript
+- HTML/CSS
+- Bootstrap
+- RxJS
+
+---
+
+## Contributing
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Commit your changes.
+4. Push to your branch.
+5. Open a pull request.
+
+
+---
+
+## Screenshots
+
+### Mutual Fund Selection and Input Form
+![Mutual Fund Selection and Input Form](https://via.placeholder.com/800x400)
+
+### Calculation Results
+![Calculation Results](https://via.placeholder.com/800x400)
+
+---
 
