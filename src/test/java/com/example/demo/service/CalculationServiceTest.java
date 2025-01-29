@@ -57,26 +57,23 @@ class CalculationServiceTest {
     }
 
     @Test
-    void testCalculateFutureValue() throws Exception {
-        String ticker = "AAPL";
-        double initialInvestment = 1000;
-        int timeInYears = 5;
+    void testFetchMarketReturnRate_MissingDates() {
+        // Mock API response without the required last date ("2024-12-31")
+        String marketReturnApiResponse = "{\"observations\":[{\"date\":\"2024-01-02\",\"value\":\"1000.00\"}]}";
 
-        // Adjusting mocked response to match expected structure
-        String mockedApiResponse = "{\"data\": {\"observations\": [1.2]}}";
-
-        // Mocking the API response correctly
-        when(restTemplate.getForObject(anyString(), eq(String.class))).thenReturn(mockedApiResponse);
+        // Mock the REST template to return the above response
+        when(restTemplate.getForObject(anyString(), eq(String.class))).thenReturn(marketReturnApiResponse);
 
         // Use actual ObjectMapper for parsing
         CalculationService calculationServiceWithRealMapper = new CalculationService(restTemplate, new ObjectMapper());
 
-        FutureValueResponse response = calculationServiceWithRealMapper.calculateFutureValue(ticker, initialInvestment, timeInYears);
+        // Verify that the method throws an exception
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            calculationServiceWithRealMapper.fetchMarketReturnRate();
+        });
 
-        assertNotNull(response);
-        assertEquals(initialInvestment, response.getInitialInvestment());
-        assertEquals(timeInYears, response.getTimeHorizon());
+        // Verify the exception message
+        assertTrue(exception.getMessage().contains("Failed to parse market return rate from API response"));
     }
-
 
 }
