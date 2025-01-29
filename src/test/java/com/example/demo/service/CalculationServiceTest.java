@@ -71,7 +71,7 @@ class CalculationServiceTest {
         Exception exception = assertThrows(RuntimeException.class, () -> {
             calculationServiceWithRealMapper.fetchMarketReturnRate();
         });
-
+      
         // Verify the exception message
         assertTrue(exception.getMessage().contains("Failed to parse market return rate from API response"));
     }

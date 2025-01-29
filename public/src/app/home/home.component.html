@@ -1,0 +1,83 @@
+<div class="top-container">
+    <div class="input-container">
+        <!-- Initial Investment Input -->
+        <div class="input-section">
+            <h1>Initial Investment (USD)</h1>
+            <div style="position: relative;">
+                <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);">$</span>
+                <input
+                        [(ngModel)]="initialInvestment"
+                        type="text"
+                        name="investment"
+                        required
+                        style="padding-left: 25px;"
+                        (change)="recalculateResults()"
+                />
+            </div>
+        </div>
+
+        <!-- Time Horizon Input -->
+        <div class="input-section">
+            <h1>Time Horizon (years)</h1>
+            <input
+                    [(ngModel)]="timeHorizon"
+                    type="text"
+                    name="time"
+                    required
+                    (change)="recalculateResults()"
+            />
+        </div>
+
+        <!-- Reset Button -->
+        <button (click)="resetAll()">Reset All</button>
+    </div>
+</div>
+
+<!-- Mutual Fund Selection -->
+<div class="selection-container">
+    <h1>Mutual Fund</h1>
+    <h2>Select mutual fund(s)</h2>
+    <div class="selection-list">
+        <div *ngFor="let fund of mutualFunds" class="selection-row">
+            <label>
+                <input type="checkbox" name="funds" [(ngModel)]="fund.selected" (change)="onFundSelectionChange(fund)"/>
+                {{ fund.name }} ({{ fund.ticker }})
+            </label>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isLoading" class="loading">
+    <p>Calculating... please wait.</p>
+</div>
+
+<div *ngIf="result.length > 0" class="results">
+    <h1>Results</h1>
+    <h2>Initial Amount (USD): ${{ this.initialInvestment }}</h2>
+    <h2>Time Horizon: {{ this.timeHorizon }} years</h2>
+    <h2>Risk Free Rate: {{ this.riskFreeRate }}%</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Fund</th>
+            <th>Beta</th>
+            <th>Return Rate</th>
+            <th>Earnings (USD)</th>
+            <th>Total Balance (USD)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let r of result">
+            <td>{{ r.ticker }}</td>
+            <td>{{ r.mutualFundBeta | number:'1.2-2' }}</td>
+            <td>{{ r.returnRate | number:'1.2-2' }}%</td>
+            <td>{{ r.earnings | currency }}</td>
+            <td>{{ r.totalBalance | currency }}</td>
+            <td>
+                <button (click)="removeResult(r.ticker)">X</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button (click)="downloadResults()">Download Results</button>
+</div>

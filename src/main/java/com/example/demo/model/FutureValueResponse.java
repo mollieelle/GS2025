@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 public class FutureValueResponse {
+    private String ticker;
     private double initialInvestment;
     private int timeHorizon;
     private double returnRate;
@@ -10,21 +11,10 @@ public class FutureValueResponse {
     private double totalBalance;
 
     public FutureValueResponse() {}
-    public FutureValueResponse(double initialInvestment,
-                               int timeHorizon, double returnRate,
-                               double riskFreeRate, double mutualFundBeta,
-                               double earnings, double totalBalance) {
-        this.initialInvestment = initialInvestment;
-        this.timeHorizon = timeHorizon;
-        this.returnRate = returnRate;
-        this.riskFreeRate = riskFreeRate;
-        this.mutualFundBeta = mutualFundBeta;
-        this.earnings = earnings;
-        this.totalBalance = totalBalance;
-    }
 
-    public FutureValueResponse(double v, double v1, double v2, int i) {
-    }
+    public String getTicker() { return ticker; }
+
+    public void setTicker(String ticker) { this.ticker = ticker; }
 
     public double getInitialInvestment() {
         return initialInvestment;
