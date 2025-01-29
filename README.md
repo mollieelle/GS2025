@@ -84,7 +84,7 @@ The frontend is an Angular application that:
 #### Setup Instructions
 1. **Navigate to the Frontend Directory**
    ```bash
-   cd frontend
+   cd .\public\
    ```
 
 2. **Install Dependencies**
