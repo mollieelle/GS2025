@@ -152,7 +152,7 @@ The Angular application interacts with the above endpoints to fetch mutual fund 
 ## Screenshots
 
 ### Mutual Fund Selection and Input Form
-![Mutual Fund Selection and Input Form](images/input_1.png)
+![Mutual Fund Selection and Input Form](images/input.png)
 
 ### Calculation Results
 ![Calculation Results](images/output.png)
