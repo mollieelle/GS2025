@@ -9,10 +9,9 @@ export interface FutureValueRequest {
 }
 
 export interface FutureValueResponse {
-  initialInvestment: number;
-  timeHorizon: number;
-  returnRate: number;
+  ticker: string;
   riskFreeRate: number;
+  returnRate: number;
   mutualFundBeta: number;
   earnings: number;
   totalBalance: number;

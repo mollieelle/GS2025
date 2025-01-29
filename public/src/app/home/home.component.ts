@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
@@ -8,125 +8,17 @@ import { CalculationService, FutureValueRequest, FutureValueResponse } from 'src
 @Component({
   selector: 'app-home',
   imports: [CommonModule, HttpClientModule, FormsModule],
-  template: `
-    <section>
-      <!-- Form Section -->
-      <form (ngSubmit)="onSubmit()">
-        <!-- Mutual Fund Dropdown -->
-        <select [(ngModel)]="selectedFund" name="fund" required>
-          <option value="" disabled selected>Select Fund</option>
-          <option *ngFor="let fund of mutualFunds" [value]="fund.ticker">
-            {{ fund.name }} ({{ fund.ticker }})
-          </option>
-          required
-        </select>
-
-        <!-- Initial Investment Input -->
-        <input
-            type="text"
-            [(ngModel)]="initialInvestment"
-            name="investment"
-            placeholder="Initial Investment Amount"
-            required
-        />
-
-        <!-- Time Horizon Input -->
-        <input
-            type="text"
-            [(ngModel)]="timeHorizon"
-            name="time"
-            placeholder="Time Horizon (in years)"
-            required
-        />
-
-        <!-- Calculate Button -->
-        <button class="primary" type="submit">Calculate</button>
-      </form>
-
-      <!-- Result Section -->
-      <div *ngIf="result" class="results">
-        <h2>Results Summary</h2>
-        <p><strong>Initial Amount (USD):</strong> {{ result.initialInvestment | currency }}</p>
-        <p><strong>Time Horizon (years):</strong> {{ result.timeHorizon }}</p>
-        <p><strong>Return Rate:</strong> {{ result.returnRate | number:'1.2-2' }}%</p>
-        <p><strong>Risk Free Rate:</strong> {{ result.riskFreeRate | number:'1.2-2' }}%</p>
-        <p><strong>Mutual Fund Beta:</strong> {{ result.mutualFundBeta | number:'1.2-2' }}</p>
-        <p><strong>Earnings (USD):</strong> {{ result.earnings | currency }}</p>
-        <p><strong>Total Balance (USD):</strong> {{ result.totalBalance | currency }}</p>
-      </div>
-    </section>
-  `,
-  styles: `
-    .results {
-      display: grid;
-      column-gap: 14px;
-      row-gap: 14px;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 400px));
-      margin-top: 50px;
-      justify-content: space-around;
-    }
-    input[type="text"] {
-      border: solid 1px var(--primary-color);
-      padding: 10px;
-      border-radius: 8px;
-      margin-right: 10px;
-      display: inline-block;
-      width: 20%;
-    }
-    input[type="number"] {
-      border: solid 1px var(--primary-color);
-      padding: 10px;
-      border-radius: 8px;
-      margin-right: 10px;
-      display: inline-block;
-      width: 20%;
-    }
-    select {
-      border: solid 1px var(--primary-color);
-      padding: 10px;
-      border-radius: 8px;
-      margin-right: 10px;
-      display: inline-block;
-      width: 20%;
-    }
-    select option[disabled] {
-      color: grey;
-    }
-    select option {
-      color: black;
-    }
-    button {
-      padding: 10px;
-      border: solid 1px var(--primary-color);
-      background: var(--primary-color);
-      color: white;
-      border-radius: 8px;
-    }
-    form button:hover {
-      background-color: #182848;
-    }
-    .results {
-      display: block; /* Ensure the result section is a block element */
-      margin-top: 20px;
-      padding: 10px;
-      background: #f9f9f9;
-      border-radius: 5px;
-      color: #333;
-    }
-
-    .results p {
-      display: block; /* Ensure each <p> is a block element */
-      margin: 10px 0; /* Add spacing between paragraphs */
-    }
-  `
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css',
 })
 export class HomeComponent implements OnInit {
   mutualFunds: MutualFund[] = [];
-  initialInvestment: string = '';
-  timeHorizon: string = '';
-  selectedFund: string = '';
-  result: FutureValueResponse | null = null;
-  showForm: boolean = true; // Control form visibility
+  initialInvestment: string = '10000';
+  timeHorizon: string = '10';
+  riskFreeRate: number = 0;
+  selectedFunds: string[] = [];
+  result: FutureValueResponse[] = [];
+  isLoading: boolean = false;
 
   constructor(
       private mutualFundService: MutualFundService,
@@ -136,7 +28,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.mutualFundService.getMutualFunds().subscribe({
       next: (data) => {
-        this.mutualFunds = data;
+        data.forEach(e=>{
+          this.mutualFunds.push({ticker: e.ticker, name: e.name, selected: false});
+        })
         console.log('Mutual Funds:', this.mutualFunds);
       },
       error: (err) => {
@@ -145,16 +39,20 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onSubmit() {
+  onFundSelectionChange(fund: MutualFund) {
+    const existingFund = this.result.find(r => r.ticker === fund.ticker);
+    if (fund.selected && !existingFund) {
+      this.selectedFunds.push(fund.ticker);
+      this.calculateResult(fund.ticker);
+    } else {
+      this.removeResult(fund.ticker);
+    }
+  }
+  
+  calculateResult(ticker: string) {
     // Convert text inputs to numbers
     const initialInvestment = parseFloat(this.initialInvestment);
     const timeHorizon = parseFloat(this.timeHorizon);
-
-    // Validate inputs
-    if (!this.selectedFund) {
-      alert('Please select a fund.');
-      return;
-    }
 
     if (isNaN(initialInvestment)) {
       alert('Please fill out the initial investment amount with valid numbers.');
@@ -166,23 +64,73 @@ export class HomeComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true; // Show loading indicator
+
     const request: FutureValueRequest = {
-      ticker: this.selectedFund,
+      ticker: ticker,
       initialInvestment: initialInvestment,
       timeInYears: timeHorizon
     };
 
     this.calculationService.calculateFutureValue(request).subscribe({
       next: (response) => {
-        this.result = response;
+        this.result.push(response);
+        this.riskFreeRate = response.riskFreeRate;
       },
       error: (err) => {
-        console.error('Error calculating future value:', err);
+        console.error('Error calculating future value for fund:', ticker, err);
+      },
+      complete: () => {
+        this.isLoading = false; // Hide loading indicator
       }
     });
   }
 
-  resetForm() {
-    this.result = null;
+  recalculateResults() {
+    this.result = []; // Clear previous results
+    this.mutualFunds.forEach(fund => {
+      if (fund.selected) {
+        this.calculateResult(fund.ticker);
+      }
+    });
+  }
+
+  removeResult(ticker: string) {
+    this.result = this.result.filter(r => r.ticker !== ticker);
+    const fund = this.mutualFunds.find(f => f.ticker === ticker);
+    if (fund) {
+      fund.selected = false;
+    }
+  }
+
+  resetAll() {
+    this.initialInvestment = '0';
+    this.timeHorizon = '0';
+    this.selectedFunds = [];
+    this.result = [];
+
+    this.mutualFunds.forEach(fund => fund.selected = false);
+  }
+
+  downloadResults() {
+    let content = 'Results\n\n';
+
+    this.result.forEach((r, index) => {
+      content += `Fund ${index + 1}:\n`;
+      content += `  Fund: ${r.ticker}\n`;
+      content += `  Return Rate: ${r.returnRate.toFixed(2)}%\n`;
+      content += `  Risk Free Rate: ${r.riskFreeRate.toFixed(2)}%\n`;
+      content += `  Beta: ${r.mutualFundBeta.toFixed(2)}\n`;
+      content += `  Earnings (USD): $${r.earnings}\n`;
+      content += `  Total Balance (USD): $${r.totalBalance}\n\n`;
+    });
+
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'mutual_fund_results.txt';
+    a.click();
+    window.URL.revokeObjectURL(url);
   }
 }

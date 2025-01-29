@@ -43,6 +43,7 @@ public class CalculationService {
 
         // Populate the response object
         FutureValueResponse response = new FutureValueResponse();
+        response.setTicker(ticker);
         response.setInitialInvestment(initialInvestment);
         response.setTimeHorizon(timeInYears);
         response.setReturnRate(rate * 100); // Convert to percentage

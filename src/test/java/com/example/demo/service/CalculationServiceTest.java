@@ -74,6 +74,7 @@ class CalculationServiceTest {
         FutureValueResponse response = calculationServiceWithRealMapper.calculateFutureValue(ticker, initialInvestment, timeInYears);
 
         assertNotNull(response);
+        assertEquals(ticker, response.getTicker());
         assertEquals(initialInvestment, response.getInitialInvestment());
         assertEquals(timeInYears, response.getTimeHorizon());
     }
