@@ -43,8 +43,8 @@ class MutualFundControllerTest {
     @Test
     void testGetAllMutualFunds() throws Exception {
         List<MutualFund> mockFunds = Arrays.asList(
-                new MutualFund("DYNF", "iShares US Equity Factor Rotation Active ETF"),
-                new MutualFund("SPHB", "Invesco S&P 500®")
+                new MutualFund("DYNF", "iShares US Equity Factor Rotation Active ETF", "ETF"),
+                new MutualFund("SPHB", "Invesco S&P 500®", "ETF")
         );
 
         when(mutualFundService.getMutualFunds()).thenReturn(mockFunds);

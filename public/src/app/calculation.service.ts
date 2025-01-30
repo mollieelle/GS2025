@@ -15,6 +15,7 @@ export interface FutureValueResponse {
   mutualFundBeta: number;
   earnings: number;
   totalBalance: number;
+  type: string;
 }
 
 @Injectable({
