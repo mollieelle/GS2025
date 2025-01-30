@@ -1,3 +1,4 @@
+<!-- Inputs Section -->
 <div class="top-container">
     <div class="input-container">
         <!-- Initial Investment Input -->
@@ -19,13 +20,17 @@
         <!-- Time Horizon Input -->
         <div class="input-section">
             <h1>Time Horizon (years)</h1>
-            <input
-                    [(ngModel)]="timeHorizon"
-                    type="text"
-                    name="time"
-                    required
-                    (change)="recalculateResults()"
-            />
+
+            <div style="position: relative;">
+                <span style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"></span>
+                <input
+                        [(ngModel)]="timeHorizon"
+                        type="text"
+                        name="time"
+                        required
+                        (change)="recalculateResults()"
+                />
+            </div>
         </div>
 
         <!-- Reset Button -->
@@ -33,33 +38,54 @@
     </div>
 </div>
 
-<!-- Mutual Fund Selection -->
-<div class="selection-container">
-    <h1>Mutual Fund</h1>
-    <h2>Select mutual fund(s)</h2>
-    <div class="selection-list">
-        <div *ngFor="let fund of mutualFunds" class="selection-row">
-            <label>
-                <input type="checkbox" name="funds" [(ngModel)]="fund.selected" (change)="onFundSelectionChange(fund)"/>
-                {{ fund.name }} ({{ fund.ticker }})
-            </label>
+<!-- Selection Section -->
+<div class = middle-container>
+    <!-- Mutual Funds -->
+    <div class="selection-container">
+        <h1>Mutual Fund</h1>
+        <h2>Select mutual fund(s)</h2>
+        <div class="selection-list">
+            <div *ngFor="let fund of mutualFunds" class="selection-row">
+                <label>
+                    <input type="checkbox" name="funds" [(ngModel)]="fund.selected" (change)="onFundSelectionChange(fund)"/>
+                    {{ fund.name }} ({{ fund.ticker }})
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- ETFs -->
+    <div class="selection-container">
+        <h1>Exchange-Traded Funds (ETFs)</h1>
+        <h2>Select ETF(s)</h2>
+        <div class="selection-list">
+            <div *ngFor="let fund of etfs" class="selection-row">
+                <label>
+                    <input type="checkbox" name="funds" [(ngModel)]="fund.selected" (change)="onFundSelectionChange(fund)"/>
+                    {{ fund.name }} ({{ fund.ticker }})
+                </label>
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Loading Message -->
 <div *ngIf="isLoading" class="loading">
     <p>Calculating... please wait.</p>
 </div>
 
+<!-- Results Section -->
 <div *ngIf="result.length > 0" class="results">
-    <h1>Results</h1>
+    <h1>RESULT SUMMARY</h1>
     <h2>Initial Amount (USD): ${{ this.initialInvestment }}</h2>
     <h2>Time Horizon: {{ this.timeHorizon }} years</h2>
     <h2>Risk Free Rate: {{ this.riskFreeRate }}%</h2>
+
     <table>
         <thead>
         <tr>
             <th>Fund</th>
+            <th>Type</th>
             <th>Beta</th>
             <th>Return Rate</th>
             <th>Earnings (USD)</th>
@@ -69,6 +95,7 @@
         <tbody>
         <tr *ngFor="let r of result">
             <td>{{ r.ticker }}</td>
+            <td>{{ r.type }}</td>
             <td>{{ r.mutualFundBeta | number:'1.2-2' }}</td>
             <td>{{ r.returnRate | number:'1.2-2' }}%</td>
             <td>{{ r.earnings | currency }}</td>
@@ -80,4 +107,11 @@
         </tbody>
     </table>
     <button (click)="downloadResults()">Download Results</button>
+</div>
+
+<div class="chart-container">
+    <div class="chart-section">
+        <h1 *ngIf="result.length > 0">Total Balance Comparison Graph</h1>
+        <canvas id="results"></canvas>
+    </div>
 </div>

@@ -8,7 +8,7 @@ import {HomeComponent} from './home/home.component';
     <main>
       <header class="brand-name">
         <p>
-          Mutual Fund Calculator
+          Investment Calculator
         </p>
       </header>
       <section class="content">
@@ -19,5 +19,5 @@ import {HomeComponent} from './home/home.component';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'Mutual Fund Calculator';
+  title = 'Investment Calculator';
 }

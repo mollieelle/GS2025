@@ -1,3 +1,4 @@
+/* Inputs Section */
 .top-container {
     display: flex;
     padding: 1rem;
@@ -29,6 +30,12 @@ input[type="text"] {
     width: 150px;
 }
 
+/* Fund Selection Section */
+.middle-container {
+    display: flex;
+    padding: 1rem;
+    justify-content: center;
+}
 .selection-container {
     align-items: center;
     display: flex;
@@ -52,7 +59,7 @@ input[type="text"] {
     flex-direction: column;
     align-items: center;
     width: 500px;
-    max-height: 100px;  /* Adjust height as needed */
+    max-height: 100px;
     padding: 1rem;
     border: solid 1px var(--primary-color);
     border-radius: 8px;
@@ -62,15 +69,16 @@ input[type="text"] {
 }
 .selection-row {
     align-items: center;
-    height: auto; /* Allow height to adjust based on content */
+    height: auto;
     display: flex;
     width: 100%;
     padding: 5px;
     border-bottom: 1px solid #ddd;
     font-size: 14px;
-    flex-wrap: wrap; /* Allow rows to wrap */
+    flex-wrap: wrap;
 }
 
+/* Loading Message */
 .loading {
     text-align: center;
     margin: 20px 0;
@@ -78,6 +86,7 @@ input[type="text"] {
     color: #333;
 }
 
+/* Buttons (Generic) */
 button {
     padding: 10px;
     border: solid 1px var(--primary-color);
@@ -92,11 +101,12 @@ button {
 }
 button:hover {
     background-color: #182848;
+    border-color: #182848;
 }
 
 /* Results Section */
 .results {
-    display: block; /* Ensure the result section is a block element */
+    display: block;
     margin-top: 30px;
     padding: 10px;
     background: #f9f9f9;
@@ -117,16 +127,37 @@ button:hover {
     text-align: center;
 }
 
+/* Chart Container */
+.chart-container {
+    justify-items: center;
+    display: flex;
+    padding: 1rem;
+    justify-content: center;
+    height: 450px;
+    width: 100%;
+}
+.chart-section {
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    width: 90%
+}
+.chart-section h1 {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #333;
+    text-align: center;
+}
+
 /* Table Styling */
 table {
     width: 100%;
-    border-collapse: separate; /* Allows spacing between cells */
-    border-spacing: 15px 10px; /* Adds horizontal and vertical spacing between cells */
+    border-collapse: separate;
+    border-spacing: 15px 10px;
     margin: 20px 0;
     font-family: Arial, sans-serif;
 }
-
-/* Table Header Styling */
 thead th {
     background-color: #f4f4f4;
     padding: 15px;
@@ -134,41 +165,35 @@ thead th {
     font-size: 16px;
     border-bottom: 2px solid #ddd;
 }
-
-/* Table Body Styling */
 tbody td {
     padding: 12px;
     text-align: left;
     font-size: 14px;
     border-bottom: 1px solid #ddd;
 }
-
-/* Alternate Row Coloring for Better Readability */
 tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
-
-/* Hover Effect on Rows */
 tbody tr:hover {
     background-color: #f1f1f1;
 }
 
-@media (max-width: 700px) {
-    .form-container {
+@media (max-width: 1100px) {
+    .middle-container {
         flex-direction: column;
     }
-
-    .form-group {
-        width: 90%;
+    .selection-list {
+        max-width: 90%;
     }
-
-    input[type="text"],
-    select {
-        width: 90%;
+}
+@media (max-width: 700px) {
+    .input-container {
+        flex-direction: column;
+        align-items: center;
     }
 
     table {
-        border-spacing: 10px 5px; /* Reduce spacing for smaller screens */
+        border-spacing: 10px 5px;
     }
 
     thead th {

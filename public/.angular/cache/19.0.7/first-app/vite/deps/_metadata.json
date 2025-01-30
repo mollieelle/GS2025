@@ -1,49 +1,58 @@
 {
-  "hash": "6e06cdab",
-  "configHash": "cd9b2eb7",
-  "lockfileHash": "853bd002",
-  "browserHash": "91af4185",
+  "hash": "873ddd2b",
+  "configHash": "c201d4d4",
+  "lockfileHash": "4731984d",
+  "browserHash": "3684cecf",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "b1654b1b",
+      "fileHash": "95e72af7",
       "needsInterop": false
     },
     "@angular/common/http": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/http.mjs",
       "file": "@angular_common_http.js",
-      "fileHash": "4ef3560e",
+      "fileHash": "1425b3c6",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "389c920d",
+      "fileHash": "36dfbea7",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "0775102a",
+      "fileHash": "257febf0",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "7f8eedc3",
+      "fileHash": "8338c117",
+      "needsInterop": false
+    },
+    "chart.js": {
+      "src": "../../../../../../node_modules/chart.js/dist/chart.js",
+      "file": "chart__js.js",
+      "fileHash": "48a951b8",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-V4B5ANIV": {
-      "file": "chunk-V4B5ANIV.js"
+    "chunk-3BRW666B": {
+      "file": "chunk-3BRW666B.js"
     },
-    "chunk-RQHRVL7K": {
-      "file": "chunk-RQHRVL7K.js"
+    "chunk-ZH3DGYYK": {
+      "file": "chunk-ZH3DGYYK.js"
     },
-    "chunk-OO26ZMFC": {
-      "file": "chunk-OO26ZMFC.js"
+    "chunk-2ZBVKVI2": {
+      "file": "chunk-2ZBVKVI2.js"
+    },
+    "chunk-WDMUDEB6": {
+      "file": "chunk-WDMUDEB6.js"
     }
   }
 }

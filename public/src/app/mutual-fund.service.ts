@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export interface MutualFund {
   ticker: string;
   name: string;
+  type: string;
   selected: boolean;
 }
 
